@@ -1,9 +1,10 @@
+require('dotenv').config()
 const Twit = require('twit');
 const T = new Twit({
-  consumer_key: APPLICATION_CONSUMER_KEY_HERE,
-  consumer_secret: APPLICATION_CONSUMER_SECRET_HERE,
-  access_token: ACCESS_TOKEN_HERE,
-  access_token_secret: ACCESS_TOKEN_SECRET_HERE
+  consumer_key: process.env.APPLICATION_CONSUMER_KEY,
+  consumer_secret: process.env.APPLICATION_CONSUMER_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
 // start stream and track tweets
