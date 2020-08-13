@@ -17,8 +17,11 @@ function responseCallback (err, data, response) {
 
 // event handler
 stream.on('tweet', tweet => {
-   // retweet
-  T.post('statuses/retweet/:id', {id: tweet.id_str}, responseCallback);
+    var res = {
+        status: 'test response',
+        in_reply_to_status_id: '' + tweet.id_str
+      };
+  T.post('statuses/update', res, responseCallback);
   // like
   T.post('favorites/create', {id: tweet.id_str}, responseCallback);
 });
