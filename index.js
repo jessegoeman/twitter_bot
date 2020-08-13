@@ -9,7 +9,7 @@ const T = new Twit({
 
 // start stream and track tweets
 const stream = T.stream('statuses/filter', {
-    follow: ['3372594015']  //ID's van users
+    follow: ['3372594015']  //ID of users you want to check and reply to.. @jessegoeman to test
 });
 
 // use this to log errors from requests
@@ -21,7 +21,7 @@ function responseCallback(err, data, response) {
 stream.on('tweet', tweet => {
     console.log(tweet)
     var res = {
-        status: 'test response',
+        status: 'When Segwit?? @' + tweet.user.screen_name,
         in_reply_to_status_id: '' + tweet.id_str
     };
     T.post('statuses/update', res, responseCallback);
