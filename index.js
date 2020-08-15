@@ -9,7 +9,7 @@ const T = new Twit({
 
 // start stream and track tweets
 const stream = T.stream('statuses/filter', {
-    follow: ['3372594015']  //ID of users you want to check and reply to.. @jessegoeman to test
+    follow: ['3372594015',"1098881188230508544"]  //ID of users you want to check and reply to.. @jessegoeman to test
 });
 
 // use this to log errors from requests
