@@ -1,4 +1,7 @@
 require('dotenv').config()
+
+const userIDToSpam = 1098881188230508544
+
 const Twit = require('twit');
 const T = new Twit({
     consumer_key: process.env.APPLICATION_CONSUMER_KEY,
@@ -7,26 +10,48 @@ const T = new Twit({
     access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
+<<<<<<< HEAD
 // start stream and track tweets
 const stream = T.stream('statuses/filter', {
     follow: ['3372594015',"1098881188230508544"]  //ID of users you want to check and reply to.. @jessegoeman to test
+=======
+// start stream and track users
+const streamUsers = T.stream('statuses/filter', {
+    follow: [1519408933, userIDToSpam] //ID of users you want to check and reply to.. @jessegoeman to test
+>>>>>>> d63cb4bab0a73d7a83ef8166f6727599c225db8c
 });
+
+streamUsers.on('tweet', tweet => {
+    console.log('---- streamUsers ----', tweet)
+    //Only reply to tweets, not replies OR when it's a spamableuser => reply to everything
+    if (tweet.user.id == userIDToSpam || (!tweet.in_reply_to_status_id && !tweet.in_reply_to_status_id_str && !tweet.in_reply_to_user_id && !tweet.in_reply_to_user_id_str && !tweet.in_reply_to_screen_name)) {
+        // comment
+        var res = {
+            status: 'When Segwit?? @' + tweet.user.screen_name,
+            in_reply_to_status_id: '' + tweet.id_str
+        };
+        T.post('statuses/update', res, responseCallback);
+        // like
+        T.post('favorites/create', {
+            id: tweet.id_str
+        }, responseCallback);
+    }
+});
+
+// start stream and track words (or hashtags)
+var streamWords = T.stream('statuses/filter', {
+    track: ['bitcoin']
+})
+
+streamWords.on('tweet', function(tweet) {
+    console.log('---- streamWords ----',tweet)
+    // Like
+    T.post('favorites/create', {
+        id: tweet.id_str
+    }, responseCallback);
+})
 
 // use this to log errors from requests
 function responseCallback(err, data, response) {
     console.log(err);
 }
-
-// event handler
-stream.on('tweet', tweet => {
-    console.log(tweet)
-    var res = {
-        status: 'When Segwit?? @' + tweet.user.screen_name,
-        in_reply_to_status_id: '' + tweet.id_str
-    };
-    T.post('statuses/update', res, responseCallback);
-    // like
-    T.post('favorites/create', {
-        id: tweet.id_str
-    }, responseCallback);
-});
